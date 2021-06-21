@@ -1,33 +1,54 @@
-import React from 'react'
+import React,{ useState, useEffect } from 'react'
 import { Switch, Route } from 'react-router-dom'
+import axios from 'axios'
+import { apiUrl } from './util/apiUrl'
 
-import NavBar from './components/NavBar'
+import Nav from './components/Nav'
+import Home from './pages/Home'
 import Transactions from './pages/Transactions'
 import NewTransaction from './pages/NewTransaction'
-import ShowTransaction from './pages/ShowTransaction'
+import TransactionID from './components/TransactionID'
 import EditTransaction from './pages/EditTransaction'
 import NotFound from './pages/NotFound'
 
 
+import CssBaseline from '@material-ui/core/CssBaseline';
+import Typography from '@material-ui/core/Typography';
+import Container from '@material-ui/core/Container';
+
+// Configuration
+const API_BASE = apiUrl()
 
 const App = () => {
+
+  const [ transactions, setTransactions ] = useState()
+
+  useEffect(() => { 
+    axios.get(`${API_BASE}/transactions`)
+    .then((response) => { 
+      const data = response
+      setTransactions(data)
+     })
+   },[])
+
+
   return (
-    <div>
-      <NavBar />
+      <div>
+      <Nav />
       <Switch>
         <Route exact path='/'>
           <Home />
         </Route>
-        <Route eact path='/transactions'>
+        <Route exact path='/transactions'>
           <Transactions />
         </Route>
-        <Route path='/transactions/new'>
+        <Route exact path='/transactions/new'>
           <NewTransaction />
         </Route>
-        <Route exact path='/transaction/:id'>
-          <ShowTransaction />
+        <Route exact path='/transactions/:id'>
+          <TransactionID />
         </Route>
-        <Route exact path='transaction/:id/edit'>
+        <Route  path='transactions/:id/edit'>
           <EditTransaction />
         </Route>
         <Route>
@@ -35,6 +56,7 @@ const App = () => {
         </Route>
       </Switch>
     </div>
+  
   )
 }
 
