@@ -233,7 +233,12 @@ const useStyles = makeStyles(theme => ({
 
 export default function EnhancedTable ({ transactions, deleteTransaction }) {
 
+<<<<<<< HEAD
   const   rows  = transactions
+=======
+
+  const   rows  = transactions ? transactions : []
+>>>>>>> 6969fd1b4d6d4960e71e3b7afa31d83e7c6d1195
   const history = useHistory()
 
   const [rowsPerPage, setRowsPerPage] = React.useState(5)

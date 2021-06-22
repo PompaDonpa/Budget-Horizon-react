@@ -66,7 +66,11 @@ export default function EditForm ({ updateTransaction, deleteTransaction }) {
      }).catch((error) =>{
        history.push("/not-found")
      })
+<<<<<<< HEAD
    },[id, history, newTransaction])
+=======
+   },[id, history])
+>>>>>>> 6969fd1b4d6d4960e71e3b7afa31d83e7c6d1195
 
 
   const handleDateChange = event => {
