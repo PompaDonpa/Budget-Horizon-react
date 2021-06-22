@@ -1,10 +1,9 @@
 import React from 'react'
-
 import EditForm from '../components/EditForm'
 
 import { makeStyles } from '@material-ui/core/styles'
-import Box from '@material-ui/core/Box'
 import Typography from '@material-ui/core/Typography'
+import Box from '@material-ui/core/Box'
 
 const useStyles = makeStyles(() => ({
   box: {
@@ -18,22 +17,42 @@ const useStyles = makeStyles(() => ({
   }
 }))
 
-const EditTransaction = () => {
+
+//  ================================
+//            MAIN FUNCTION
+//  ================================
+
+
+export default function EditTransaction ({ updateTransaction, deleteTransaction }){
+
   const classes = useStyles()
+
   return (
     <>
-    <Box boxShadow={3} className={classes.box}>
-      <Typography variant='h5' className={classes.title}>
+      <Box 
+        className={classes.box}
+        boxShadow={3} 
+      >
+        <Typography 
+          className={classes.title}
+          variant='h5' 
+        >
         Edit Transaction
-      </Typography>
-      <Typography variant='body2' className={classes.title}>
-        please fill out the form
-      </Typography>
-    </Box>
-    <div>Balance</div>
-      <EditForm />
+        </Typography>
+        <Typography 
+          className={classes.title}
+          variant='body2' 
+        >
+        <sub>Please fill out the form and click Update to Submit</sub>
+        </Typography>
+      </Box>
+      <div>&emsp;</div>
+      <EditForm 
+        updateTransaction={updateTransaction} 
+        deleteTransaction={deleteTransaction}
+      />
     </>
   )
 }
 
-export default EditTransaction
+

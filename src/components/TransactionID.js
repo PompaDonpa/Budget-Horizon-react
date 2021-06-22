@@ -1,23 +1,17 @@
-import React, { useState } from 'react'
+import { useParams, useHistory } from 'react-router-dom'
+import React, { useState, useEffect } from 'react'
+import { apiUrl } from '../util/apiUrl'
+import axios from 'axios'
 
-import Button from '@material-ui/core/Button'
+
 import CssBaseline from '@material-ui/core/CssBaseline'
 import Container from '@material-ui/core/Container'
 import { makeStyles } from '@material-ui/core/styles'
 import TextField from '@material-ui/core/TextField'
-import DateFnsUtils from '@date-io/date-fns'
-import {
-  MuiPickersUtilsProvider,
-  KeyboardTimePicker,
-  KeyboardDatePicker
-} from '@material-ui/pickers'
+import Button from '@material-ui/core/Button'
+
 
 const useStyles = makeStyles(theme => ({
-  root: {
-    display: 'flex',
-    flexWrap: 'wrap',
-    margin: 4
-  },
   textField: {
     marginLeft: theme.spacing(1),
     marginRight: theme.spacing(1),
@@ -26,128 +20,141 @@ const useStyles = makeStyles(theme => ({
   date: {
     fontSize: 8,
     color: 'black'
-  }
+  },
+  divEdit: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'center',
+  },
+  buttonEdit: {
+    width: '40%',
+    margin: 5
+  },
 }))
 
-const handleDateChange = event => {
-  event.preventDefault()
-  console.log('d')
-}
+//  ================================
+//            MAIN FUNCTION
+//  ================================
 
-const handleSubmit = event => {
-  event.preventDefault()
-  console.log('d')
-}
+const TransactionID = ({ deleteTransaction }) => {
 
-const NewForm = () => {
-  const [selectedDate, setSelectedDate] = React.useState(new Date())
   const classes = useStyles()
+
+  const [ transaction, setTransaction ] = useState({})
+  let { id } = useParams()
+  let history = useHistory()
+  
+  useEffect( ()=>{ 
+    const API_BASE = apiUrl()
+    axios.get(`${API_BASE}/transactions/${id}`)
+    .then((response) =>{ 
+      setTransaction(response.data)
+     }).catch((error) =>{
+       history.push("/not-found")
+     })
+   },[id, history])
+
+
+  const handleDelete = () => {
+    deleteTransaction(id)
+    history.push("/transactions")
+  }
+
+  
   return (
-    <React.Fragment>
+    <>
       <CssBaseline />
       <Container maxWidth='sm'>
         <form
-          onSubmit={handleSubmit}
-          style={{ backgroundColor: 'white', height: '100%' }}
-          className={classes.form}
+          style={{ backgroundColor: 'white', borderRadius: 20 }}
         >
-          <div>
-            <TextField
-              id='outlined-full-width'
-              label='Transaction ID'
-              style={{ margin: 0, padding: 10 }}
-              placeholder='Description'
-              fullWidth
-              margin='normal'
-              InputLabelProps={{
-                shrink: true
-              }}
-              variant='outlined'
-              required
-            />
-          </div>
-          <div>
-            <div>&emsp;</div>
-            <TextField
-              type='number'
-              id='outlined-full-width'
-              label='Ammount'
-              style={{ margin: 0, padding: 10 }}
-              placeholder='$'
-              fullWidth
-              margin='normal'
-              InputLabelProps={{
-                shrink: true
-              }}
-              variant='outlined'
-              required
-            />
-          </div>
-          <div>
-            <div>&emsp;</div>
-            <TextField
-              id='outlined-full-width'
-              label='From'
-              style={{ margin: 0, padding: 10 }}
-              placeholder='...'
-              fullWidth
-              margin='normal'
-              InputLabelProps={{
-                shrink: true
-              }}
-              variant='outlined'
-              required
-            />
-          </div>
-          <div>
-            <div>&emsp;</div>
-            <TextField
-              id='outlined-full-width'
-              label='Flag'
-              style={{ margin: 0, padding: 10 }}
-              placeholder='Utility'
-              fullWidth
-              margin='normal'
-              InputLabelProps={{
-                shrink: true
-              }}
-              variant='outlined'
-              required
-            />
-          </div>
-          <div>
-            <div style={{ margin: 0, padding: 14 }}>
-              <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                <KeyboardDatePicker
-                  orientation='landscape'
-                  className={classes.date}
-                  margin='normal'
-                  id='date-picker'
-                  label='Date'
-                  format='MM/dd/yyyy'
-                  value={selectedDate}
-                  onChange={handleDateChange}
-                  KeyboardButtonProps={{
-                    'aria-label': 'change date'
-                  }}
-                  fullWidth
-                  required
-                />
-              </MuiPickersUtilsProvider>
-            </div>
-          </div>
-          <div style={{ margin: 0, padding: 14 }}>
-            <Button type='submit' variant='outlined' color='primary' fullWidth>
-              Edit
+          <TextField
+            id='transactionId'
+            label='Transaction ID'
+            style={{ margin: 0, padding: 10 }}
+            value={transaction.transactionId}
+            InputLabelProps={{shrink: true}}
+            variant='outlined'
+            fullWidth
+            disabled
+          />
+          <TextField
+            type='number'
+            id='ammount'
+            label='Ammount'
+            style={{ margin: 0, padding: 10 }}
+            value={transaction.amount}
+            InputLabelProps={{shrink: true}}
+            variant='outlined'
+            fullWidth
+            disabled
+          />
+          <TextField
+            id='from'
+            label='From'
+            style={{ margin: 0, padding: 10 }}
+            value={transaction.from}
+            margin='normal'
+            InputLabelProps={{shrink: true}}
+            variant='outlined'
+            fullWidth
+            disabled
+          />
+          <TextField
+            id='flag'
+            label='Flag'
+            style={{ margin: 0, padding: 10 }}
+            value={transaction.flag}
+            InputLabelProps={{shrink: true}}
+            variant='outlined'
+            fullWidth
+            disabled
+          />
+          <TextField
+            id='date'
+            label='Date'
+            style={{ margin: 0, padding: 10 }}
+            value={transaction.date}
+            InputLabelProps={{shrink: true}}
+            variant='outlined'
+            fullWidth
+            disabled
+          />
+          <div className={classes.divEdit}>
+            <Button 
+              onClick={()=>{history.push(`/transactions/${id}/edit`)}} 
+              variant='outlined' color='primary' 
+              className={classes.buttonEdit} 
+              type='Link'
+            >
+            Edit
             </Button>
-            <Button type='submit' variant='outlined' color='primary' fullWidth>
-              Delete
+            <Button 
+              className={classes.buttonEdit} 
+              onClick={handleDelete} 
+              variant='outlined' 
+              color='primary' 
+              type='Link' 
+            >
+            Delete
+            </Button>
+          </div>
+
+          <div style={{ margin: 0, padding: 14 }}>
+            <Button 
+              onClick={()=>history.push("/transactions")}
+              variant='outlined' 
+              color='primary' 
+              type='Link' 
+              fullWidth
+            >
+            Back
             </Button>
           </div>
         </form>
       </Container>
-    </React.Fragment>
+    </>
   )
 }
 
-export default NewForm
+export default TransactionID

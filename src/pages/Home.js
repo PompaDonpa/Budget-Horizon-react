@@ -1,7 +1,8 @@
 import React from 'react'
+
 import { makeStyles } from '@material-ui/core/styles'
-import Box from '@material-ui/core/Box'
 import Typography from '@material-ui/core/Typography'
+import Box from '@material-ui/core/Box'
 
 const useStyles = makeStyles(() => ({
   box: {
@@ -15,20 +16,30 @@ const useStyles = makeStyles(() => ({
   }
 }))
 
-const Home = () => {
+export default function Home (){
+
   const classes = useStyles()
+
   return (
     <>
-    <Box boxShadow={3} className={classes.box}>
-      <Typography variant='h5' className={classes.title}>
+      <Box 
+        className={classes.box}
+        boxShadow={3} 
+      >
+        <Typography 
+          className={classes.title}
+          variant='h5' 
+        >
         Welcome
-      </Typography>
-      <Typography variant='body2' className={classes.title}>
-        A modern budget app
-      </Typography>
-    </Box>
+        </Typography>
+        <Typography 
+          className={classes.title}
+          variant='body2' 
+        >
+        <sub>A modern budget app</sub>
+        </Typography>
+      </Box>
     </>
   )
 }
 
-export default Home

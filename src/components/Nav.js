@@ -1,21 +1,16 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import CssBaseline from '@material-ui/core/CssBaseline'
-import Card from '@material-ui/core/Card';
-import Container from '@material-ui/core/Container'
-import CardMedia from '@material-ui/core/CardMedia';
 
-import Box from '@material-ui/core/Box';
+import BottomNavigationAction from '@material-ui/core/BottomNavigationAction'
+import BottomNavigation from '@material-ui/core/BottomNavigation'
+import AddCircleIcon from '@material-ui/icons/AddCircle';
+import CssBaseline from '@material-ui/core/CssBaseline'
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles'
-import BottomNavigation from '@material-ui/core/BottomNavigation'
-import BottomNavigationAction from '@material-ui/core/BottomNavigationAction'
-import HomeIcon from '@material-ui/icons/Home';
 import StorageIcon from '@material-ui/icons/Storage';
-import AddCircleIcon from '@material-ui/icons/AddCircle';
-import Chip from '@material-ui/core/Chip';
-import Paper from '@material-ui/core/Paper';
-import { SCOPABLE_TYPES } from '@babel/types';
+import Container from '@material-ui/core/Container'
+import HomeIcon from '@material-ui/icons/Home';
+import Box from '@material-ui/core/Box';
 
 
 const useStyles = makeStyles({
@@ -38,7 +33,6 @@ const useStyles = makeStyles({
     height: '90px',
     transform: 'scale(0.8)',
     backgroundColor: '#90b4ce',
-
 },
 main:{
     height: '50%',
@@ -51,43 +45,66 @@ icon:{
 }
 })
 
-const Nav = () => {
-  const classes = useStyles()
+//  ================================
+//            MAIN FUNCTION
+//  ================================
+
+
+export default function Nav () {
+
   const [value, setValue] = React.useState(0)
+  const classes = useStyles()
+
   return (
     <>
-      <CssBaseline />
-      <Box boxShadow={1}>
-      <Container component='div' className={classes.container} >
+    <CssBaseline />
+    <Box boxShadow={1}>
+      <Container 
+          className={classes.container}
+          component='div' 
+      >
       <Box boxShadow={0}>   
-      <img src='../../BudgetPet.png' className={classes.card}/>   
-
-        </Box>
-            {/* <Chip label="Budget Horizon" variant="outlined" className={classes.chip}/> */}
-        <Typography variant="h4" className={classes.main}>Budget Horizon</Typography>
-
-        <BottomNavigation
-          value={value}
-          onChange={(event, newValue) => {
-            setValue(newValue)
-          }}
-          showLabels
-          className={classes.navigation}
-        >
-          <Link to='/'>
-                <BottomNavigationAction label='Home' icon={<HomeIcon className={classes.icon} />} />
-          </Link>
-          <Link to='/transactions'>
-          <BottomNavigationAction label='Transactions' icon={<StorageIcon  className={classes.icon} />} />
-          </Link>
-          <Link to='/transactions/new'>
-          <BottomNavigationAction label='New' icon={<AddCircleIcon  className={classes.icon} />} />
-          </Link>
-        </BottomNavigation>
-      </Container>
+        <img 
+          src='../../BudgetPet.png'
+          className={classes.card} 
+          alt="BudgetPet"
+        />   
       </Box>
+
+      <Typography 
+        className={classes.main}
+        variant="h4" 
+      >
+      Budget Horizon
+      </Typography>
+
+      <BottomNavigation
+        onChange={(event, newValue) => {setValue(newValue)}}
+        className={classes.navigation}
+        value={value}
+      >
+        <Link to='/'>
+          <BottomNavigationAction 
+            icon={<HomeIcon className={classes.icon} />} 
+            label='Home' 
+          />
+        </Link>
+        <Link to='/transactions'>
+          <BottomNavigationAction 
+            icon={<StorageIcon  className={classes.icon} />}
+            label='Transactions' 
+          />
+        </Link>
+        <Link to='/transactions/new'>
+          <BottomNavigationAction 
+            icon={<AddCircleIcon  className={classes.icon} />} 
+            label='New' 
+          />
+        </Link>
+      </BottomNavigation>
+     </Container>
+    </Box>
     </>
   )
 }
 
-export default Nav
