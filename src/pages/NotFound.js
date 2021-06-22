@@ -1,7 +1,8 @@
 import React from 'react'
+
 import { makeStyles } from '@material-ui/core/styles'
-import Box from '@material-ui/core/Box'
 import Typography from '@material-ui/core/Typography'
+import Box from '@material-ui/core/Box'
 
 const useStyles = makeStyles(() => ({
   box: {
@@ -15,18 +16,34 @@ const useStyles = makeStyles(() => ({
   }
 }))
 
-const NotFound = () => {
+
+//  ================================
+//            MAIN FUNCTION
+//  ================================
+
+
+export default function NotFound (){
+
   const classes = useStyles()
+
   return (
-    <Box boxShadow={3} className={classes.box}>
-      <Typography variant='h5' className={classes.title}>
-        Page not Found
+    <Box 
+    className={classes.box}
+      boxShadow={3} 
+    >
+      <Typography 
+        className={classes.title}
+        variant='h5' 
+      >
+      Page not Found
       </Typography>
-      <Typography variant='body2' className={classes.title}>
-        404
+      <Typography 
+        className={classes.title}
+        variant='body2' 
+      >
+      404
       </Typography>
     </Box>
   )
 }
 
-export default NotFound

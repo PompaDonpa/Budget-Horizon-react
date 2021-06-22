@@ -1,23 +1,21 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
+import { useParams, useHistory } from 'react-router-dom'
+import { apiUrl } from '../util/apiUrl'
+import axios from 'axios'
 
-import Button from '@material-ui/core/Button'
+
 import CssBaseline from '@material-ui/core/CssBaseline'
-import Container from '@material-ui/core/Container'
 import { makeStyles } from '@material-ui/core/styles'
 import TextField from '@material-ui/core/TextField'
+import Container from '@material-ui/core/Container'
+import Button from '@material-ui/core/Button'
 import DateFnsUtils from '@date-io/date-fns'
 import {
   MuiPickersUtilsProvider,
-  KeyboardTimePicker,
   KeyboardDatePicker
 } from '@material-ui/pickers'
 
 const useStyles = makeStyles(theme => ({
-  root: {
-    display: 'flex',
-    flexWrap: 'wrap',
-    margin: 4
-  },
   textField: {
     marginLeft: theme.spacing(1),
     marginRight: theme.spacing(1),
@@ -26,125 +24,183 @@ const useStyles = makeStyles(theme => ({
   date: {
     fontSize: 8,
     color: 'black'
-  }
+  },
+  divEdit: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'center',
+  },
+  buttonEdit: {
+    width: '40%',
+    margin: 5
+  },
 }))
 
-const handleDateChange = event => {
-  event.preventDefault()
-  console.log('d')
-}
 
-const handleSubmit = event => {
-  event.preventDefault()
-  console.log('d')
-}
+//  ================================
+//            MAIN FUNCTION
+//  ================================
 
-const EditForm = () => {
-  const [selectedDate, setSelectedDate] = React.useState(new Date())
+export default function EditForm ({ updateTransaction, deleteTransaction }) {
+
+  
   const classes = useStyles()
+
+  const [ transaction, setTransaction ] = useState({})
+  let {id } = useParams()
+  let history = useHistory()
+  
+  const [newTransaction, setNewTransaction] = useState({
+    transactionId: '',
+    amount: 0,
+    from: '',
+    flag: '',
+    date: new Date().toLocaleDateString(),
+  })
+
+  useEffect( ()=>{ 
+    const API_BASE = apiUrl()
+    axios.get(`${API_BASE}/transactions/${id}`)
+    .then((response) =>{ 
+      setTransaction(response.data)
+     }).catch((error) =>{
+       history.push("/not-found")
+     })
+   },[id, history])
+
+
+  const handleDateChange = event => {
+    let date = event.toLocaleDateString()
+    setNewTransaction({ ...newTransaction, date })
+  }
+
+  const handleAmountChange = event => {
+    let amount = parseInt(event.target.value)
+    setNewTransaction({ ...newTransaction, amount })
+  }
+
+  const handleTextChange = event => {
+    setNewTransaction({
+      ...newTransaction,
+      [event.target.id]: event.target.value
+    })
+  }
+
+  const handleDelete = () => {
+    deleteTransaction(id)
+    history.push("/transactions")
+  }
+
+  const handleUpdate =(event) => {
+    event.preventDefault() 
+    newTransaction["id"] = id
+    updateTransaction(newTransaction)
+    history.push("/transactions")
+  }
+  
   return (
-    <React.Fragment>
+    <>
       <CssBaseline />
       <Container maxWidth='sm'>
         <form
-          onSubmit={handleSubmit}
-          style={{ backgroundColor: 'white', height: '100%' }}
-          className={classes.form}
+          style={{ backgroundColor: 'white', borderRadius: 20 }}
+          onSubmit={handleUpdate}
         >
-          <div>
-            <TextField
-              id='outlined-full-width'
-              label='Transaction ID'
-              style={{ margin: 0, padding: 10 }}
-              placeholder='Description'
-              fullWidth
-              margin='normal'
-              InputLabelProps={{
-                shrink: true
-              }}
-              variant='outlined'
-              required
-            />
+          <TextField
+            placeholder={transaction.transactionId}
+            style={{ margin: 0, padding: 10 }}
+            InputLabelProps={{shrink: true}}
+            onChange={handleTextChange}
+            label='Transaction ID'
+            variant='outlined'
+            id='transactionId'
+            fullWidth
+            required
+          />
+          <TextField
+            style={{ margin: 0, padding: 10 }}
+            placeholder={transaction.amount}
+            InputLabelProps={{shrink: true}}
+            onChange={handleAmountChange}
+            variant='outlined'
+            label='Amount'
+            type='number'
+            id='amount'
+            fullWidth
+            required
+          />
+          <TextField
+            style={{ margin: 0, padding: 10 }}
+            InputLabelProps={{shrink: true}}
+            placeholder={transaction.from}
+            onChange={handleTextChange}
+            variant='outlined'
+            margin='normal'
+            label='From'
+            id='from'
+            fullWidth
+            required
+          />
+          <TextField
+            style={{ margin: 0, padding: 10 }}
+            InputLabelProps={{shrink: true}}
+            placeholder={transaction.flag}
+            onChange={handleTextChange}
+            variant='outlined'
+            label='Flag'
+            id='flag'
+            fullWidth
+            required
+          />
+          <div style={{ margin: 0, padding: 14 }}>
+            <MuiPickersUtilsProvider utils={DateFnsUtils}>
+              <KeyboardDatePicker
+                KeyboardButtonProps={{'aria-label': 'change date'}}
+                placeholder={transaction.date}
+                onChange={handleDateChange}
+                className={classes.date}
+                orientation='landscape'
+                format='MM/dd/yyyy'
+                label='Date'
+                id='date'
+                fullWidth
+                required
+              />
+            </MuiPickersUtilsProvider>
           </div>
-          <div>
-            <div>&emsp;</div>
-            <TextField
-              type='number'
-              id='outlined-full-width'
-              label='Ammount'
-              style={{ margin: 0, padding: 10 }}
-              placeholder='$'
-              fullWidth
-              margin='normal'
-              InputLabelProps={{
-                shrink: true
-              }}
-              variant='outlined'
-              required
-            />
-          </div>
-          <div>
-            <div>&emsp;</div>
-            <TextField
-              id='outlined-full-width'
-              label='From'
-              style={{ margin: 0, padding: 10 }}
-              placeholder='...'
-              fullWidth
-              margin='normal'
-              InputLabelProps={{
-                shrink: true
-              }}
-              variant='outlined'
-              required
-            />
-          </div>
-          <div>
-            <div>&emsp;</div>
-            <TextField
-              id='outlined-full-width'
-              label='Flag'
-              style={{ margin: 0, padding: 10 }}
-              placeholder='Utility'
-              fullWidth
-              margin='normal'
-              InputLabelProps={{
-                shrink: true
-              }}
-              variant='outlined'
-              required
-            />
-          </div>
-          <div>
-            <div style={{ margin: 0, padding: 14 }}>
-              <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                <KeyboardDatePicker
-                  orientation='landscape'
-                  className={classes.date}
-                  margin='normal'
-                  id='date-picker'
-                  label='Date'
-                  format='MM/dd/yyyy'
-                  value={selectedDate}
-                  onChange={handleDateChange}
-                  KeyboardButtonProps={{
-                    'aria-label': 'change date'
-                  }}
-                  fullWidth
-                  required
-                />
-              </MuiPickersUtilsProvider>
-            </div>
+          <div className={classes.divEdit}>
+            <Button 
+              className={classes.buttonEdit}
+              variant='outlined' 
+              color='primary' 
+              type='submit' 
+            >
+            Update
+            </Button>
+            <Button 
+              className={classes.buttonEdit}
+              onClick={handleDelete} 
+              variant='outlined' 
+              color='primary' 
+              type='link' 
+            >
+            Delete
+            </Button>
           </div>
           <div style={{ margin: 0, padding: 14 }}>
-            <Button type='submit' variant='outlined' color='primary' fullWidth>
-              Make Changes
+            <Button 
+              onClick={()=>history.push("/transactions")}
+              variant='outlined' 
+              color='primary' 
+              type='link' 
+              fullWidth
+              >
+            Back
             </Button>
           </div>
         </form>
       </Container>
-    </React.Fragment>
+    </>
   )
 }
 
-export default EditForm

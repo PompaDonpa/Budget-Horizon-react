@@ -8,13 +8,13 @@
 }
 
 .container{
-
     grid-area: 1/2/1/2;
 }
 
 a {
     text-decoration: none;
 }
+
 a:visited{
     color: '#3da9fc';
 }
