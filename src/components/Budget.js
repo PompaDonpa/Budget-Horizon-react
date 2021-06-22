@@ -99,19 +99,20 @@ import clsx from 'clsx';
 //  ================================
 
 
-export default function Budget ( {  balanceUpdated, spentUpdated } ) {
+export default function Budget ( {  balanceUpdated, spentUpdated, updateBudget, updatedBudget } ) {
 
     const classes = useStyles()
     const theme = useTheme();
 
     const [ prevBudget, setPrevBudget ] = useState()
-    const [ budget, setBudget ] = useState(1000); 
+    const [ budget, setBudget ] = useState(updatedBudget); 
     const [ value, setValue ] = useState(0); 
 
     const submitUserBudget = event =>{
         setPrevBudget(0)
         setValue(0)
         setBudget(parseFloat(event.target.value))
+        updateBudget(event.target.value)
     }
   
     const handleBudgetChange =e =>{
@@ -179,7 +180,7 @@ export default function Budget ( {  balanceUpdated, spentUpdated } ) {
           {parseFloat(balanceUpdated).toLocaleString('en-US', {style: 'currency',currency: 'USD'})}
         </TabPanel>
         <TabPanel value={value} index={1} dir={theme.direction} style={{fontSize: 24}}>
-          {budget.toLocaleString('en-US', {style: 'currency',currency: 'USD'}) }
+          {parseFloat(budget).toLocaleString('en-US', {style: 'currency',currency: 'USD'}) }
           
           <form className={classes.root} noValidate autoComplete="off">
             <TextField

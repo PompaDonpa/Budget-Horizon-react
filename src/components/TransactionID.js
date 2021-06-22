@@ -52,7 +52,7 @@ const TransactionID = ({ deleteTransaction }) => {
      }).catch((error) =>{
        history.push("/not-found")
      })
-   },[id, history])
+   },[id, history, transaction])
 
 
   const handleDelete = () => {
