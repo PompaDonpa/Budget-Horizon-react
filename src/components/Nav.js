@@ -18,7 +18,7 @@ const useStyles = makeStyles({
   container:{
     backgroundColor: '#90b4ce',
     height: '20vh',
-    width: 'auto',
+    width: '100vw',
     display: 'flex',
     flexDirection: 'flex-column',
     justifyContent: 'space-around',
@@ -26,8 +26,10 @@ const useStyles = makeStyles({
   },  
   navigation: {
     backgroundColor: '#90b4ce',
-    width: '50%',
+    width: '60%',
     height: '90%',
+    bottom: -4,
+    right: -4
   },
   card:{
     width: '100px',
@@ -42,7 +44,7 @@ main:{
 },
 icon:{
      color: '#2d334a',
-     fontSize: 30,
+     fontSize: 50,
 }
 })
 
