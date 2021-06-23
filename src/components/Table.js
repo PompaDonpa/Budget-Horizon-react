@@ -240,7 +240,7 @@ export default function EnhancedTable ({ transactions, deleteTransaction }) {
   const [orderBy, setOrderBy] = React.useState('date')
   const [selected, setSelected] = React.useState([])
   const [order, setOrder] = React.useState('asc')
-  const [dense, setDense] = React.useState(true)
+  const [dense, setDense] = React.useState(false)
   const [page, setPage] = React.useState(0)
   const classes = useStyles()
 

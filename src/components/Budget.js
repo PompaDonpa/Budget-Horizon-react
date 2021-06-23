@@ -88,7 +88,7 @@ import clsx from 'clsx';
         marginLeft: theme.spacing(1),
         marginRight: theme.spacing(1),
         bottom: theme.spacing(6),
-        left: theme.spacing(40),
+        left: theme.spacing(70),
         width: '24ch',
       },
   }));

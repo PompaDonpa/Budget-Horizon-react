@@ -15,10 +15,15 @@ import Box from '@material-ui/core/Box'
 
 
 const useStyles = makeStyles({
+  top:{  
+    backgroundColor: '#90b4ce',
+  },
   container:{
     backgroundColor: '#90b4ce',
     height: '20vh',
     width: '100vw',
+    marginLeft: 'auto',
+    marginRight: 'auto',
     display: 'flex',
     flexDirection: 'flex-column',
     justifyContent: 'space-around',
@@ -26,10 +31,12 @@ const useStyles = makeStyles({
   },  
   navigation: {
     backgroundColor: '#90b4ce',
-    width: '60%',
+    justifyContent: 'space-evenly',
+    alignItems: 'center',
+    width: '30%',
     height: '90%',
-    bottom: -4,
-    right: -4
+    bottom: -6,
+    right: -10
   },
   card:{
     width: '100px',
@@ -40,7 +47,8 @@ const useStyles = makeStyles({
 main:{
     height: '50%',
     userSelect: 'none',
-    color: '#094067'
+    color: '#094067',
+    bottom: -2,
 },
 icon:{
      color: '#2d334a',
@@ -61,7 +69,7 @@ export default function Nav () {
   return (
     <>
     <CssBaseline />
-    <Box boxShadow={1}>
+    <Box boxShadow={1} className={classes.top}>
       <Container 
           className={classes.container}
           component='div' 
@@ -76,7 +84,7 @@ export default function Nav () {
 
       <Typography 
         className={classes.main}
-        variant="h4" 
+        variant="h2" 
       >
       Budget Horizon
       </Typography>
