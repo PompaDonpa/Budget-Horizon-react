@@ -1,5 +1,5 @@
 export const apiUrl = () => { 
     return window.location.hostname === "localhost"
     ? "http://localhost:3001"
-    : "https://github.com"
+    : "https://budget-horizon.herokuapp.com"
  }
