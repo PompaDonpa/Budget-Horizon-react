@@ -99,31 +99,20 @@ import clsx from 'clsx';
 //  ================================
 
 
-<<<<<<< HEAD
 export default function Budget ( {  balanceUpdated, spentUpdated, updateBudget, updatedBudget } ) {
-=======
-export default function Budget ( {  balanceUpdated, spentUpdated } ) {
->>>>>>> 6969fd1b4d6d4960e71e3b7afa31d83e7c6d1195
 
     const classes = useStyles()
     const theme = useTheme();
 
     const [ prevBudget, setPrevBudget ] = useState()
-<<<<<<< HEAD
     const [ budget, setBudget ] = useState(updatedBudget); 
-=======
-    const [ budget, setBudget ] = useState(1000); 
->>>>>>> 6969fd1b4d6d4960e71e3b7afa31d83e7c6d1195
     const [ value, setValue ] = useState(0); 
 
     const submitUserBudget = event =>{
         setPrevBudget(0)
         setValue(0)
         setBudget(parseFloat(event.target.value))
-<<<<<<< HEAD
         updateBudget(event.target.value)
-=======
->>>>>>> 6969fd1b4d6d4960e71e3b7afa31d83e7c6d1195
     }
   
     const handleBudgetChange =e =>{
@@ -191,11 +180,7 @@ export default function Budget ( {  balanceUpdated, spentUpdated } ) {
           {parseFloat(balanceUpdated).toLocaleString('en-US', {style: 'currency',currency: 'USD'})}
         </TabPanel>
         <TabPanel value={value} index={1} dir={theme.direction} style={{fontSize: 24}}>
-<<<<<<< HEAD
           {parseFloat(budget).toLocaleString('en-US', {style: 'currency',currency: 'USD'}) }
-=======
-          {budget.toLocaleString('en-US', {style: 'currency',currency: 'USD'}) }
->>>>>>> 6969fd1b4d6d4960e71e3b7afa31d83e7c6d1195
           
           <form className={classes.root} noValidate autoComplete="off">
             <TextField
