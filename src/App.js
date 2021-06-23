@@ -29,19 +29,25 @@ export default function App (){
   const [ spentUpdated, setSpentUpdated ] = useState(0)
   const [ updatedBudget, setUpdatedBudget ] = useState(0)
 
+ 
   useEffect(() => {
-    axios.get(`${API_BASE}/transactions`)
-      .then((response) => {
-        const balancer = response.data.reduce((sum,obj)=>{return sum += obj.amount},0)
-        const liability = response.data.reduce((neg,obj)=>{return neg += obj.amount < 0 ? obj.amount : 0},0)
-        setBalanceUpdated(balancer)
-        setSpentUpdated(liability)
-        setTransactions(response.data)
-      })
-      .catch((error)=>{
-        console.log(error)
-      })
-  })
+    axios.get(`${API_BASE}/transactions`).then((response) => {
+      setTransactions(response.data)
+      setBalanceUpdated(response.data.reduce((sum,obj)=>{return sum += obj.amount},0))
+      setSpentUpdated(response.data.reduce((neg,obj)=>{return neg += obj.amount < 0 ? obj.amount : 0},0))
+    })
+    .catch((error)=>{
+      console.log(error)
+    })
+  },[])
+
+  const getBalance = (transactions) =>{ 
+    const balancer = transactions.reduce((sum,obj)=>{return sum += obj.amount},0)
+    const liability = transactions.reduce((neg,obj)=>{return neg += obj.amount < 0 ? obj.amount : 0},0)
+    setBalanceUpdated(balancer)
+    setSpentUpdated(liability)
+  }
+
 
   const addTransaction = (newTransaction) => {
     axios.post(`${API_BASE}/transactions`, newTransaction)
@@ -50,6 +56,8 @@ export default function App (){
       })
       .then((response) => {
         setTransactions(response.data)
+        getBalance(response.data)
+        
       })
       .catch((error) => {
         console.error(error)
@@ -60,32 +68,38 @@ export default function App (){
     axios.delete(`${API_BASE}/transactions/${id}`)
       .then((response) =>{
         const deletedObjs = response.data
-        const nextTransaction = transactions.filter(transaction => !deletedObjs.find(obj => transaction.id === obj.id))
-        setTransactions(nextTransaction)
+        const nextTransactions = transactions.filter(transaction => !deletedObjs.find(obj => transaction.id === obj.id))
+        setTransactions(nextTransactions)
+        getBalance(nextTransactions)
+
       })
       .catch((error) => {
         console.error(error)
       })
    }
 
-  const updateTransaction = (updatedTransaction) => {
-
-    const id = updatedTransaction.id
+  const updateTransaction = (updatedTransaction, id) => {
 
     axios.put(`${API_BASE}/transactions/${id}`, updatedTransaction)
       .then((response) =>{
-        const editedTransaction = response.data
-        const updatedTransaction = transactions.filter(transaction => !editedTransaction.find(edited => transaction.id === edited.id ))
-        setTransactions(updatedTransaction)
+      const editedTransaction = response.data
+      const isIndex = (transaction) => transaction.id === id
+      const idx = transactions.findIndex(isIndex)
+      const transactionsCopy = [...transactions]
+      transactionsCopy[idx] = editedTransaction 
+      setTransactions(transactionsCopy)
+      getBalance(transactionsCopy)
+
       })
       .catch((error) => {
         console.error(error)
       })
   }
 
-    const updateBudget = (budget) =>{
-      setUpdatedBudget(budget)
-    }
+  const updateBudget = (budget) =>{
+    setUpdatedBudget(budget)
+  }
+
 
   return (
       <div>

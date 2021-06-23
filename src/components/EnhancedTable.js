@@ -150,7 +150,7 @@ const EnhancedTableToolbar = props => {
   const classes = useToolbarStyles()
   const { numSelected, selectedArray, deleteTransaction , setSelected, history} = props
 
-  const handleDeleteIcon = event =>{
+  const handleDeleteIcon = () =>{
     setSelected([])
     deleteTransaction(selectedArray)
     history.push("/transactions")

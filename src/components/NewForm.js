@@ -61,8 +61,7 @@ export default function NewForm ({addTransaction}) {
     })
   }
 
-  const handleSubmit = event => {
-    event.preventDefault()
+  const handleSubmit = () => {
     addTransaction(newTransaction)
     history.push('/transactions')
   }

@@ -46,8 +46,7 @@ export default function EditForm ({ updateTransaction, deleteTransaction }) {
   
   const classes = useStyles()
 
-  const [ transaction, setTransaction ] = useState({})
-  let {id } = useParams()
+  let { id } = useParams()
   let history = useHistory()
   
   const [newTransaction, setNewTransaction] = useState({
@@ -56,17 +55,19 @@ export default function EditForm ({ updateTransaction, deleteTransaction }) {
     from: '',
     flag: '',
     date: new Date().toLocaleDateString(),
+    id: id
   })
 
   useEffect( ()=>{ 
     const API_BASE = apiUrl()
     axios.get(`${API_BASE}/transactions/${id}`)
     .then((response) =>{ 
-      setTransaction(response.data)
+      setNewTransaction(response.data)
      }).catch((error) =>{
+       console.log(error)
        history.push("/not-found")
      })
-   },[id, history, newTransaction])
+   },[id, history])
 
 
   const handleDateChange = event => {
@@ -91,10 +92,8 @@ export default function EditForm ({ updateTransaction, deleteTransaction }) {
     history.push("/transactions")
   }
 
-  const handleUpdate =(event) => {
-    event.preventDefault() 
-    newTransaction["id"] = id
-    updateTransaction(newTransaction)
+  const handleUpdate =() => {
+    updateTransaction(newTransaction,id)
     history.push("/transactions")
   }
   
@@ -107,7 +106,7 @@ export default function EditForm ({ updateTransaction, deleteTransaction }) {
           onSubmit={handleUpdate}
         >
           <TextField
-            placeholder={transaction.transactionId}
+            placeholder={newTransaction.transactionId}
             style={{ margin: 0, padding: 10 }}
             InputLabelProps={{shrink: true}}
             onChange={handleTextChange}
@@ -119,7 +118,7 @@ export default function EditForm ({ updateTransaction, deleteTransaction }) {
           />
           <TextField
             style={{ margin: 0, padding: 10 }}
-            placeholder={transaction.amount}
+            placeholder={newTransaction.amount}
             InputLabelProps={{shrink: true}}
             onChange={handleAmountChange}
             variant='outlined'
@@ -132,7 +131,7 @@ export default function EditForm ({ updateTransaction, deleteTransaction }) {
           <TextField
             style={{ margin: 0, padding: 10 }}
             InputLabelProps={{shrink: true}}
-            placeholder={transaction.from}
+            placeholder={newTransaction.from}
             onChange={handleTextChange}
             variant='outlined'
             margin='normal'
@@ -144,7 +143,7 @@ export default function EditForm ({ updateTransaction, deleteTransaction }) {
           <TextField
             style={{ margin: 0, padding: 10 }}
             InputLabelProps={{shrink: true}}
-            placeholder={transaction.flag}
+            placeholder={newTransaction.flag}
             onChange={handleTextChange}
             variant='outlined'
             label='Flag'
@@ -156,7 +155,7 @@ export default function EditForm ({ updateTransaction, deleteTransaction }) {
             <MuiPickersUtilsProvider utils={DateFnsUtils}>
               <KeyboardDatePicker
                 KeyboardButtonProps={{'aria-label': 'change date'}}
-                placeholder={transaction.date}
+                placeholder={newTransaction.date}
                 onChange={handleDateChange}
                 className={classes.date}
                 orientation='landscape'

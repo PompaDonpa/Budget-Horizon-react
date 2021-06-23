@@ -1,6 +1,6 @@
 import React from 'react'
 import Budget from '../components/Budget'
-import Table from '../components/Table'
+import EnhancedTable from '../components/EnhancedTable'
 
 
 export default function Transactions ({ transactions, deleteTransaction, balanceUpdated, spentUpdated, updateBudget, updatedBudget }){
@@ -14,7 +14,7 @@ export default function Transactions ({ transactions, deleteTransaction, balance
         updatedBudget={updatedBudget}
       />
       <div>&emsp;</div>
-      <Table
+      <EnhancedTable
         deleteTransaction={deleteTransaction}
         transactions={transactions}
       />
